@@ -92,3 +92,16 @@ just remove `from exc` and rerun the command
 You may also need to run `python manage.py migrate` before a working run
 
 The following [link](http://localhost:8081/) should display the django sample code
+
+## 2 Setup application
+
+Add `'django.contrib.auth.middleware.RemoteUserMiddleware'` in `MIDDLEWARE` in settings file
+
+```python
+# cryptr_django/settings.py
+
+MIDDLEWARE = [
+  # ...
+  'django.contrib.auth.middleware.RemoteUserMiddleware'
+]
+```
