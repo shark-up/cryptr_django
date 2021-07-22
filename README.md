@@ -198,3 +198,42 @@ Here is how to build `YOUR_AUDIENCE` :
 ```
 
 Your setup is now ready for token decoding and endpoint protection (in next chapters)
+
+## 03 Validate Access Token
+
+First you need to write `jwt_decode_token` definition in aim to check if provided token is a right one
+
+This needs to be written in `utils.py` file
+
+```python
+# cryptrauthorization/utlis.py
+
+# ...
+from django.conf import settings
+import json
+import jwt
+import requests
+
+def jwt_get_username_from_payload_handler(payload):
+  # ...
+
+def jwt_decode_token(token):
+    header = jwt.get_unverified_header(token)
+
+    issuer = '{}/t/{}'.format(settings.CRYPTR_CONFIG['BASE_URL'], settings.CRYPTR_CONFIG['TENANT_DOMAIN']) # MUST be equivalent to settings.JWT_AUTH['JWT_ISSUER']
+    audience = settings.JWT_AUTH['JWT_AUDIENCE']
+    algorithm = settings.JWT_AUTH['JWT_ALGORITHM']
+    jwks_uri = '{}/.well-known/jwks'.format(issuer)
+    jwks = requests.get(jwks_uri).json()
+
+    public_key = None
+    for jwk in jwks['keys']:
+        if jwk['kid'] == header['kid']:
+            public_key = jwt.algorithms.RSAAlgorithm.from_jwk(json.dumps(jwk))
+    
+    if public_key is None:
+        raise Exception('Public key not found')
+    
+    return jwt.decode(token, public_key, audience=audience, issuer=issuer, algorithms=[algorithm])
+
+```
