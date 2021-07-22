@@ -351,3 +351,12 @@ urlpatterns = [
   path('', views.courses, name ='courses')
 ]" >> cryptrauthorization/urls.py
 ```
+
+Last step add `path('api/v1/courses', include('cryptrauthorization.urls'))`to root urls.py file
+
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/v1/courses', include('cryptrauthorization.urls'))
+]
+```
