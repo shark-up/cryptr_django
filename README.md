@@ -131,3 +131,33 @@ def jwt_get_username_from_payload_handler(payload):
     authenticate(remote_user=username)
     return username" >> cryptrauthorization/utlis.py
 ```
+
+### Configure REST framework
+
+Add `'rest_framework'` to `INSTALLED_APPS` in settings.py
+
+```python
+# cryptr_django/settings.py
+
+INSTALLED_APPS = [
+    # ...
+    'rest_framework'
+]
+```
+
+Add `REST_FRAMEWORK` in `settings.py`
+
+```python
+# cryptr_django/settings.py
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+        'rest_framework.authentication.BasicAuthentication',
+    ),
+}
+```
