@@ -201,7 +201,7 @@ Your setup is now ready for token decoding and endpoint protection (in next chap
 
 ## 03 Validate Access Token
 
-First you need to write `jwt_decode_token` definition in aim to check if provided token is a right one
+First, you need to write `jwt_decode_token` definition in aim to check if provided token is a right one
 
 This needs to be written in `utils.py` file
 
@@ -236,4 +236,54 @@ def jwt_decode_token(token):
     
     return jwt.decode(token, public_key, audience=audience, issuer=issuer, algorithms=[algorithm])
 
+```
+
+### Add scope validation support
+
+Now, we can add a decorator to easily add support for scopes, with steps below each request can be validated if token provided has a specific scope
+
+Paste the code below in `cryptrauthorization/views.py` file
+
+```python
+# cryptrauthorization/views.py
+
+from functools import wraps
+from django.http import JsonResponse
+import jwt
+
+def get_token_auth_header(request):
+    """Obtains the Access Token from the Authorization Header
+    """
+    auth = request.META.get("HTTP_AUTHORIZATION", None)
+    if auth is None:
+      return False
+    parts = auth.split()
+    token = parts[1]
+
+    return token
+
+def requires_scope(required_scope):
+    """Determines if the required scope is present in the Access Token
+    Args:
+        required_scope (str): The scope required to access the resource
+    """
+    def require_scope(f):
+        @wraps(f)
+        def decorated(*args, **kwargs):
+            token = get_token_auth_header(args[0])
+            if token is False:
+              null_token_response = JsonResponse({'message': 'No Authorization header provided'})
+              null_token_response.status_code = 403
+              return null_token_response
+            decoded = jwt.decode(token, verify=False)
+            token_scopes = decoded["scp"]
+            if token_scopes:
+                for token_scope in token_scopes:
+                    if token_scope == required_scope:
+                        return f(*args, **kwargs)
+            response = JsonResponse({'message': 'You don\'t have access to this resource'})
+            response.status_code = 403
+            return response
+        return decorated
+    return require_scope
 ```
