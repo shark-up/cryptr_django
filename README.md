@@ -389,3 +389,13 @@ MIDDLEWARE = [
 ]
 ```
 
+Finally, add your audience to `CORS_ORIGIN_WHITELIST`
+
+```python
+# cryptr_django/settings.py
+
+CORS_ORIGIN_WHITELIST = [
+  'YOUR_AUDIENCE', # should be something like http://localhost:3000
+  # ...
+]
+```
