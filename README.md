@@ -105,3 +105,18 @@ MIDDLEWARE = [
   'django.contrib.auth.middleware.RemoteUserMiddleware'
 ]
 ```
+
+Add `AUTHENTICATION_BACKENDS` with `ModelBackend` and `RemoteUserBackend`
+
+```python
+# cryptr_django/settings.py
+
+MIDDLEWARE = [
+  # ...
+]
+
+AUTHENTICATION_BACKENDS = [
+    'django.contrib.auth.backends.ModelBackend',
+    'django.contrib.auth.backends.RemoteUserBackend',
+]
+```
