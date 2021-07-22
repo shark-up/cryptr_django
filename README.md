@@ -367,8 +367,7 @@ Consumming your API through a client App in a browser may not work due to CORS r
 
 The following modifications will help you out for this project
 
-Add `corsheaders` to `INSTALLED_APPS`
-
+- Add `corsheaders` to `INSTALLED_APPS`
 
 ```python
 # cryptr_django/settings.py
@@ -378,3 +377,15 @@ INSTALLED_APPS = [
   'corsheaders'
 ]
 ```
+
+- Add `'corsheaders.middleware.CorsMiddleware'` to `MIDDLEWARE`
+
+```python
+# cryptr_django/settings.py
+
+MIDDLEWARE = [
+  'corsheaders.middleware.CorsMiddleware'
+,  # ...
+]
+```
+
