@@ -64,8 +64,8 @@ pyjwt~=1.7.1
 requests~=2.22.0" >> requirements.txt
 ```
 
-```
+to run requirements installation:
+
+```bash
 pip install -r requirements.txt
 ```
- to run installation
-
