@@ -69,3 +69,26 @@ to run requirements installation:
 ```bash
 pip install -r requirements.txt
 ```
+
+## First run of your server
+
+you can run the following command to test your app
+
+```bash
+python manage.py runserver 8081 # 8081 is the part that we'll use in the react app
+```
+
+:warning: If you're facing the following error
+
+```bash
+File "manage.py", line 16
+    ) from exc
+         ^
+SyntaxError: invalid syntax
+````
+
+just remove `from exc` and rerun the command
+
+You may also need to run `python manage.py migrate` before a working run
+
+The following [link](http://localhost:8081/) should display the django sample code
