@@ -42,6 +42,7 @@ def requires_scope(required_scope):
     return require_scope
 
 @api_view(['GET'])
+# @requires_scope('read:courses')
 def courses(request):
     return JsonResponse([
         {
