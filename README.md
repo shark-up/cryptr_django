@@ -360,3 +360,42 @@ urlpatterns = [
     path('api/v1/courses', include('cryptrauthorization.urls'))
 ]
 ```
+
+## 5 Handling Cors
+
+Consumming your API through a client App in a browser may not work due to CORS restrictions (and also OPTIONS requests).
+
+The following modifications will help you out for this project
+
+- Add `corsheaders` to `INSTALLED_APPS`
+
+```python
+# cryptr_django/settings.py
+
+INSTALLED_APPS = [
+  # ...
+  'corsheaders'
+]
+```
+
+- Add `'corsheaders.middleware.CorsMiddleware'` to `MIDDLEWARE`
+
+```python
+# cryptr_django/settings.py
+
+MIDDLEWARE = [
+  'corsheaders.middleware.CorsMiddleware'
+,  # ...
+]
+```
+
+Finally, add your audience to `CORS_ORIGIN_WHITELIST`
+
+```python
+# cryptr_django/settings.py
+
+CORS_ORIGIN_WHITELIST = [
+  'YOUR_AUDIENCE', # should be something like http://localhost:3000
+  # ...
+]
+```
