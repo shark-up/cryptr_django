@@ -1,3 +1,5 @@
 db.sqlite3
 cryptr_django/__pycache__/
 cryptr_django/__pycache__/*
+cryptrauthorization/__pycache__/
+cryptrauthorization/__pycache__/*
