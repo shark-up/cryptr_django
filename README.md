@@ -129,7 +129,7 @@ echo "from django.contrib.auth import authenticate
 def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub')
     authenticate(remote_user=username)
-    return username" >> cryptrauthorization/utlis.py
+    return username" >> cryptrauthorization/utils.py
 ```
 
 ### Configure REST framework
@@ -206,7 +206,7 @@ First, you need to write `jwt_decode_token` definition in aim to check if provid
 This needs to be written in `utils.py` file
 
 ```python
-# cryptrauthorization/utlis.py
+# cryptrauthorization/utils.py
 
 # ...
 from django.conf import settings
