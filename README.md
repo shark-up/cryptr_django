@@ -174,7 +174,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 CRYPTR_CONFIG = {
-    'AUDIENCE': 'http://localhost:3000',
+    'AUDIENCE': 'AUDIENCE', # in your test may be http://localhost:3000
     'TENANT_DOMAIN': 'YOUR_DOMAIN',
     'BASE_URL': 'https://auth.cryptr.eu'
 }
