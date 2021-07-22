@@ -339,3 +339,15 @@ If you want to precise a required scope to access to this resource just add
 ```python
 @requires_scope('some:scope')
 ```
+
+Final steps are to update Urls mappings to handle this route.
+
+```bash
+echo "from django.urls import path
+
+from . import views
+
+urlpatterns = [
+  path('', views.courses, name ='courses')
+]" >> cryptrauthorization/urls.py
+```
