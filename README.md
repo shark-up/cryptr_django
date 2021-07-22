@@ -287,3 +287,76 @@ def requires_scope(required_scope):
         return decorated
     return require_scope
 ```
+
+## 4 - Protect API endpoints
+
+In this section we'll add the final code lines to protect your api endpoints depending on token provided in the request.
+
+We will use two rest framework decorators : `@api_view` and `@permission_classes`
+
+The use of `@api_view` decorator indicates that method requires an authentication
+
+`@permission_classes([AllowAny])` indicates that the method is in public access
+
+This final part is related to our [Cryptr React example](https://github.com/cryptr-examples/cryptr-react-sample). This React sample targets a backend API, in this case this Django API, and calls `/api/v1/courses` to list the current user's courses.
+
+### create courses method
+
+We need to create `courses`method at end of `view.py` file
+
+```python
+# cryptrauthorization/views.py
+
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+
+# ...
+
+# require authentication
+
+@api_view(['GET'])
+def courses(request):
+    return JsonResponse([
+        {
+            "id": 1,
+                "user_id": "eba25511-afce-4c8e-8cab-f82822434648",
+                "title": "learn git",
+                "tags": ["colaborate", "git" ,"cli", "commit", "versionning"],
+                "img": "https://carlchenet.com/wp-content/uploads/2019/04/git-logo.png",
+                "desc": "Learn how to create, manage, fork, and collaborate on a project. Git stays a major part of all companies projects. Learning git is learning how to make your project better everyday",
+                "date": '5 Nov',
+                "timestamp": 1604577600000,
+                "teacher": {
+                    "name": "Max",
+                    "picture": "https://images.unsplash.com/photo-1558531304-a4773b7e3a9c?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80"
+                }
+        }
+    ], safe=False)
+```
+
+If you want to precise a required scope to access to this resource just add
+
+```python
+@requires_scope('some:scope')
+```
+
+Final steps are to update Urls mappings to handle this route.
+
+```bash
+echo "from django.urls import path
+
+from . import views
+
+urlpatterns = [
+  path('', views.courses, name ='courses')
+]" >> cryptrauthorization/urls.py
+```
+
+Last step add `path('api/v1/courses', include('cryptrauthorization.urls'))`to root urls.py file
+
+```python
+urlpatterns = [
+    path('admin/', admin.site.urls),
+    path('api/v1/courses', include('cryptrauthorization.urls'))
+]
+```
