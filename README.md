@@ -129,7 +129,7 @@ echo "from django.contrib.auth import authenticate
 def jwt_get_username_from_payload_handler(payload):
     username = payload.get('sub')
     authenticate(remote_user=username)
-    return username" >> cryptrauthorization/utlis.py
+    return username" >> cryptrauthorization/utils.py
 ```
 
 ### Configure REST framework
@@ -181,9 +181,9 @@ CRYPTR_CONFIG = {
 
 JWT_AUTH = {
     'JWT_PAYLOAD_GET_USERNAME_HANDLER':
-        'auth0authorization.utils.jwt_get_username_from_payload_handler',
+        'cryptrauthorization.utils.jwt_get_username_from_payload_handler',
     'JWT_DECODE_HANDLER':
-        'auth0authorization.utils.jwt_decode_token',
+        'cryptrauthorization.utils.jwt_decode_token',
     'JWT_ALGORITHM': 'RS256',
     'JWT_AUDIENCE': 'AUDIENCE', # in your test may be http://localhost:3000
     'JWT_ISSUER': 'YOUR_ISSUER', # see below for more info
@@ -206,7 +206,7 @@ First, you need to write `jwt_decode_token` definition in aim to check if provid
 This needs to be written in `utils.py` file
 
 ```python
-# cryptrauthorization/utlis.py
+# cryptrauthorization/utils.py
 
 # ...
 from django.conf import settings
